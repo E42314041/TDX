@@ -1,15 +1,27 @@
 {
     "name": "TDX Learning Environment",
+    
+    // 关键：指定使用Ubuntu镜像，而不是默认的Alpine
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
     
     "features": {
-        "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/common:1": {},
-        "ghcr.io/devcontainers/features/kvm:1": {
-            "installKvm": true
-        },
+        "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/docker-in-docker:2": {}
     },
+    
+    // 添加这些配置来启用KVM
+    "runArgs": [
+        "--device=/dev/kvm",
+        "--cap-add=NET_ADMIN",
+        "--cap-add=SYS_ADMIN"
+    ],
+    
+    "containerEnv": {
+        "DEBIAN_FRONTEND": "noninteractive"
+    },
+    
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y qemu-system-x86 qemu-utils build-essential git wget curl python3 python3-pip libssl-dev lsb-release software-properties-common && echo 'TDX开发环境准备完成！'",
     
     "customizations": {
         "vscode": {
@@ -22,9 +34,6 @@
         }
     },
     
-    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y qemu-system-x86 build-essential git wget curl python3 python3-pip libssl-dev && echo '环境准备完成！'",
-    
     "forwardPorts": [8080, 2222],
-    
     "remoteUser": "vscode"
 }
