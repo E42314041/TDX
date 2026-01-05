@@ -1,0 +1,30 @@
+{
+    "name": "TDX Learning Environment",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+    
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/common:1": {},
+        "ghcr.io/devcontainers/features/kvm:1": {
+            "installKvm": true
+        },
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.makefile-tools",
+                "redhat.vscode-yaml",
+                "ms-python.python"
+            ]
+        }
+    },
+    
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y qemu-system-x86 build-essential git wget curl python3 python3-pip libssl-dev && echo '环境准备完成！'",
+    
+    "forwardPorts": [8080, 2222],
+    
+    "remoteUser": "vscode"
+}
